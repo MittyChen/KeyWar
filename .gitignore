@@ -1,0 +1,30 @@
+#unity3D .gitignore file:.
+# Store this file at the root of your local repository.
+ClientUnity/Library/AssetImportState
+ClientUnity/Library/AssetServerCacheV3
+ClientUnity/Library/AnnotationManager
+ClientUnity/Library/FailedAssetImports.txt
+ClientUnity/Library/ScriptAssemblies/
+ClientUnity/Library/ScriptMapper
+ClientUnity/Library/assetDatabase3
+ClientUnity/Library/cache/
+ClientUnity/Library/expandedItems
+ClientUnity/Library/metadata/
+ClientUnity/Library/guidmapper
+ClientUnity/Library/preview/
+ClientUnity/Temp/
+ClientUnity/Assets/Plugins/Android/bin/
+ClientUnity/Assets/Plugins/Android/gen/
+*.apk
+*.pidb
+*.userprefs
+.DS_Store
+ClientUnity/Assembly-CSharp-Editor-vs.csproj
+ClientUnity/Assembly-CSharp-Editor.csproj
+ClientUnity/Assembly-CSharp-firstpass-vs.csproj
+ClientUnity/Assembly-CSharp-firstpass.csproj
+ClientUnity/Assembly-CSharp-vs.csproj
+ClientUnity/Assembly-CSharp.csproj
+ClientUnity_Andorid/
+*.csproj
+*.sln
