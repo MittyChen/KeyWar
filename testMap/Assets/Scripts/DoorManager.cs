@@ -22,6 +22,7 @@ public class DoorManager : MonoBehaviour {
 			{
 				if(doorType == "orange")
 				{
+					GameObject.FindGameObjectWithTag("uiorangekey").SetActive(false);
 					Destroy (gameObject);
 				}
 
@@ -32,7 +33,7 @@ public class DoorManager : MonoBehaviour {
 					GameObject.FindGameObjectWithTag("winlogo").GetComponent<Animation>().Play();
 					Destroy (gameObject);
 					Debug.Log(" You win the game!!!");
-
+					GameObject.FindGameObjectWithTag("uiyellowkey").SetActive(true);
 
 				}
 			}

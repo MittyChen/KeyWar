@@ -69,7 +69,9 @@ public class LevManager: MonoBehaviour {
 
 	public void doThingsWithLoading()
 	{ 
-		GameObject.FindGameObjectWithTag ("levelscrollview").transform.position = new Vector3 (0,0,1000);
+		GameObject.FindGameObjectWithTag ("levelscrollview").transform.position = new Vector3 (0,0,-2000);
+
+	
 
 		loadScene = Instantiate (Resources.Load ("Prefabs/Scene/Loading")) as GameObject;
 		

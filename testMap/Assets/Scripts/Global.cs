@@ -92,7 +92,7 @@ public class Global : MonoBehaviour {
 	{
 		loadScene = Instantiate (Resources.Load ("Prefabs/Scene/Loading")) as GameObject;
 		
-		StartCoroutine(WaitAndGoto(1.0F,new ButtonEventDelegate(mainSceneToLevels)));
+		StartCoroutine(WaitAndGoto(0.5F,new ButtonEventDelegate(mainSceneToLevels)));
 	}
 
 
