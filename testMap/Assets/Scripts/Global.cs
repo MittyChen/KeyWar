@@ -3,8 +3,8 @@ using System.Collections;
 
 public class Global : MonoBehaviour {
 	 
-	 
-	AudioSource bgmusic ;
+	private Vector3 cameraOriPosition =  Vector3.zero ;
+	public static AudioSource bgmusic ;
 
 	// Use this for initialization
 	void Start () {
@@ -25,8 +25,8 @@ public class Global : MonoBehaviour {
 		if (this.gameObject.tag == "mainmenu") {
 			this.GetComponentInChildren<tk2dUIToggleButton>().IsOn = bgmusic.isPlaying;
 		}
-		
-	 
+		cameraOriPosition = GameObject.FindGameObjectWithTag ("MainCamera").transform.position;
+
 	}
 	
 	// Update is called once per frame
@@ -60,8 +60,13 @@ public class Global : MonoBehaviour {
 	}
 
 	public void destroyGameScene(){
+		GameObject.FindGameObjectWithTag ("MainCamera").transform.position = cameraOriPosition;
 		Destroy (GameObject.FindGameObjectWithTag ("gamescene"));
 		Destroy (GameObject.FindGameObjectWithTag ("tilemap"));
+		Destroy (GameObject.FindGameObjectWithTag ("player"));
+		Destroy (GameObject.FindGameObjectWithTag ("gamebackground"));
+
+
 	}
 
 	public void gametoMainScene()
@@ -76,6 +81,13 @@ public class Global : MonoBehaviour {
 		destroyGameScene ();
 		changeBGMTOMenu ();
 		Instantiate (Resources.Load ("Prefabs/Scene/levelselect"));
+	}
+
+	public void gotoLevelFromGameWithLoading()
+	{
+		loadScene = Instantiate (Resources.Load ("Prefabs/Scene/Loading")) as GameObject;
+		
+		StartCoroutine(WaitAndGoto(0.5F,new ButtonEventDelegate(gameToLevelSelectScene)));
 	}
 
 
@@ -94,6 +106,80 @@ public class Global : MonoBehaviour {
 		
 		StartCoroutine(WaitAndGoto(0.5F,new ButtonEventDelegate(mainSceneToLevels)));
 	}
+
+
+	public void reloadGame()
+	{
+		destroyGameScene ();
+		bgmusic.Stop ();
+		string currentLevelName = "Prefabs/Levels/level_prefab_" + LevManager.currentLevel;
+		loadTilePrefabs (currentLevelName);
+		Instantiate (Resources.Load ("Prefabs/player/player"));
+		Instantiate (Resources.Load ("Prefabs/UI/boundries"));
+		Instantiate (Resources.Load ("Prefabs/UI/gamesceneui"));
+
+	}
+
+	public void loadNextGame()
+	{
+		destroyGameScene ();
+		bgmusic.Stop ();
+
+
+		int levelnum = int.Parse (LevManager.currentLevel);
+		Debug.Log ("levelnum" +  levelnum);
+
+		int nextLevelNum = levelnum + 1;
+		string nextlevel = "";
+		if (nextLevelNum < 10) {
+			nextlevel = "0" + nextLevelNum;
+		} else {
+			nextlevel = "" + nextLevelNum;	
+		}
+		LevManager.currentLevel = nextlevel;
+		string currentLevelName = "Prefabs/Levels/level_prefab_" + nextlevel;
+		loadTilePrefabs (currentLevelName);
+		Instantiate (Resources.Load ("Prefabs/player/player"));
+		Instantiate (Resources.Load ("Prefabs/UI/boundries"));
+		Instantiate (Resources.Load ("Prefabs/UI/gamesceneui"));
+	
+	}
+
+
+	private void loadTilePrefabs(string name)
+	{
+		Object myLevel = Resources.Load(name);
+
+		if(!myLevel){
+			myLevel = Resources.Load("Prefabs/Levels/level_prefab_01");
+		}
+		GameObject levelscene = Instantiate (myLevel) as GameObject;
+		
+		levelscene.GetComponent<tk2dTileMap> ().renderData.transform.localScale = levelscene.transform.localScale;
+		
+		levelscene.GetComponent<tk2dTileMap> ().renderData.transform.position = levelscene.transform.position;
+		
+		levelscene.GetComponent<tk2dTileMap> ().renderData.transform.rotation = levelscene.transform.rotation;
+
+		LevManager.changeBGMTOFight ();
+	}
+
+
+
+	public void reloadWithLoading()
+	{
+		loadScene = Instantiate (Resources.Load ("Prefabs/Scene/Loading")) as GameObject;
+		
+		StartCoroutine(WaitAndGoto(0.5F,new ButtonEventDelegate(reloadGame)));
+	}
+	public void loadNextLevelWithLoading()
+	{
+		loadScene = Instantiate (Resources.Load ("Prefabs/Scene/Loading")) as GameObject;
+		
+		StartCoroutine(WaitAndGoto(0.5F,new ButtonEventDelegate(loadNextGame)));
+	}
+
+
 
 
 

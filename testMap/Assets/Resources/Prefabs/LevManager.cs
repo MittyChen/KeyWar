@@ -2,15 +2,18 @@
 using System.Collections;
 
 public class LevManager: MonoBehaviour {
-	AudioSource bgmusic;
 	// Use this for initialization
+	public  static string currentLevel = "-1";
+
+
 	void Start () {
 
 		this.gameObject.GetComponent<UIButton> ().onClick.ToArray()[0].target = this;
-		string currenvalue = gameObject.GetComponentsInChildren<UILabel> ()[0].text;
-		gameObject.GetComponentsInChildren<UILabel>()[0].text =  currenvalue + "\n" + gameObject.name;
+//		string currenvalue = gameObject.GetComponentsInChildren<UILabel> ()[0].text;
+//		gameObject.GetComponentsInChildren<UILabel>()[0].text =  currenvalue + "\n" + gameObject.name;
 
-		bgmusic = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<AudioSource> ();
+		string currenvalue = gameObject.GetComponentsInChildren<tk2dTextMesh> ()[0].text;
+		gameObject.GetComponentsInChildren<tk2dTextMesh>()[0].text =  currenvalue + "\n   " + gameObject.name;
 	}
 	
 	// Update is called once per frame
@@ -32,10 +35,15 @@ public class LevManager: MonoBehaviour {
 
 		string currentLevelName = "Prefabs/Levels/level_prefab_" + this.gameObject.name;
 
+		currentLevel = this.gameObject.name;
+
 		loadTilePrefabs (currentLevelName);
 
 		Instantiate (Resources.Load ("Prefabs/UI/gamesceneui"));
 
+		Instantiate (Resources.Load ("Prefabs/player/player"));
+
+		Instantiate (Resources.Load ("Prefabs/UI/boundries"));
 	}
 
 
@@ -69,9 +77,9 @@ public class LevManager: MonoBehaviour {
 
 	public void doThingsWithLoading()
 	{ 
-		GameObject.FindGameObjectWithTag ("levelscrollview").transform.position = new Vector3 (0,0,-2000);
+//		GameObject.FindGameObjectWithTag ("levelscrollview").transform.position = new Vector3 (0,0,4000);
 
-	
+		GameObject.FindGameObjectWithTag ("scrollviewcamera").SetActive (false);
 
 		loadScene = Instantiate (Resources.Load ("Prefabs/Scene/Loading")) as GameObject;
 		
@@ -86,12 +94,12 @@ public class LevManager: MonoBehaviour {
 		mevent ();
 	}
 
-	public void changeBGMTOFight()
+	public static void changeBGMTOFight()
 	{
-		if(bgmusic.isPlaying)
+		if(Global.bgmusic.isPlaying)
 		{
-			bgmusic.clip = (AudioClip)Resources.Load("Audios/fightbm", typeof(AudioClip));//调用Resources方法加载AudioClip资源
-			bgmusic.Play ();
+			Global.bgmusic.clip = (AudioClip)Resources.Load("Audios/fightbm", typeof(AudioClip));//调用Resources方法加载AudioClip资源
+			Global.bgmusic.Play ();
 		}
 
 	}

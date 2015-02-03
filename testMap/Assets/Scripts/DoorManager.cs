@@ -15,14 +15,21 @@ public class DoorManager : MonoBehaviour {
 	}
 
 
-	void OnTriggerEnter(Collider other) {
-		if(other.gameObject.tag == "player"){
-			int playerKeys = other.gameObject.GetComponent<PlayerController>().keyState;
+	void OnCollisionEnter(Collision collision) {
+
+		if (collision.collider.gameObject.GetComponent<PlayerController> () != null && collision.collider.gameObject.GetComponent<PlayerController> ().playerState != 1) {
+			return ;		
+		}
+
+		if(collision.collider.gameObject.tag == "player"){
+			int playerKeys = collision.collider.gameObject.GetComponent<PlayerController>().keyState;
 			if(playerKeys == 1)
 			{
 				if(doorType == "orange")
-				{
-					GameObject.FindGameObjectWithTag("uiorangekey").SetActive(false);
+				{ 
+
+					GameObject.FindGameObjectWithTag("uiorangekey").GetComponent<MeshRenderer>().enabled = false;
+					GameObject.FindGameObjectWithTag("uiorangekey").GetComponent<BoxCollider>().enabled = false;
 					Destroy (gameObject);
 				}
 
@@ -31,12 +38,19 @@ public class DoorManager : MonoBehaviour {
 			    if(doorType == "yellow")
 				{
 					GameObject.FindGameObjectWithTag("winlogo").GetComponent<Animation>().Play();
-					Destroy (gameObject);
-					Debug.Log(" You win the game!!!");
-					GameObject.FindGameObjectWithTag("uiyellowkey").SetActive(true);
-
+					GameObject.FindGameObjectWithTag("uiyellowkey").GetComponent<MeshRenderer>().enabled = false;
+					GameObject.FindGameObjectWithTag("uiyellowkey").GetComponent<BoxCollider>().enabled = false; 
+					StartCoroutine(WaitAndFinishlevel(1.0F));
 				}
 			}
 		}
+	}
+
+	IEnumerator WaitAndFinishlevel(float waitTime)  
+	{
+		yield return new WaitForSeconds(waitTime);
+		Destroy (gameObject);
+		JoySticsControl jc =  GameObject.FindGameObjectWithTag ("gamescene").GetComponent<JoySticsControl> ();
+		jc.showPauseBox (PAUSE_BOX_TYPE.PAUSE_BOX_LEVEL_DONE);
 	}
 }

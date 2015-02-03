@@ -23,16 +23,21 @@ public class SharpItem : MonoBehaviour {
 
 	IEnumerator WaitAndLose(float waitTime)  
 	{
-		yield return new WaitForSeconds(0.1f);
+
 
 		mplayer.GetComponent<PlayerController>().playerState  = 0;
 		mplayer.GetComponent<tk2dSpriteAnimator>().Play("pale");
 		mplayer.rigidbody.velocity = new Vector3(0,3,0);
 		mplayer.rigidbody.transform.Rotate(0,0,180);
 		mplayer.collider.enabled = false; 
-		yield return new WaitForSeconds(waitTime);  
+		yield return new WaitForSeconds(0.2f);  
 
 		GameObject.FindGameObjectWithTag("loselogo").GetComponent<Animation>().Play();
+
+		yield return new WaitForSeconds(waitTime);
+
+		JoySticsControl jc =  GameObject.FindGameObjectWithTag ("gamescene").GetComponent<JoySticsControl> ();
+		jc.showPauseBox (PAUSE_BOX_TYPE.PAUSE_BOX_FAILED);
 		
 	}  
 
