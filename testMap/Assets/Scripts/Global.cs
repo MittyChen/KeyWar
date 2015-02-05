@@ -102,6 +102,7 @@ public class Global : MonoBehaviour {
 
 	public void doThingsWithLoading()
 	{
+		GameObject.FindGameObjectWithTag ("MainCamera").transform.position = cameraOriPosition;
 		loadScene = Instantiate (Resources.Load ("Prefabs/Scene/Loading")) as GameObject;
 		
 		StartCoroutine(WaitAndGoto(0.5F,new ButtonEventDelegate(mainSceneToLevels)));
@@ -168,12 +169,15 @@ public class Global : MonoBehaviour {
 
 	public void reloadWithLoading()
 	{
+		GameObject.FindGameObjectWithTag ("MainCamera").transform.position = cameraOriPosition;
 		loadScene = Instantiate (Resources.Load ("Prefabs/Scene/Loading")) as GameObject;
 		
 		StartCoroutine(WaitAndGoto(0.5F,new ButtonEventDelegate(reloadGame)));
 	}
 	public void loadNextLevelWithLoading()
 	{
+		GameObject.FindGameObjectWithTag ("MainCamera").transform.position = cameraOriPosition;
+
 		loadScene = Instantiate (Resources.Load ("Prefabs/Scene/Loading")) as GameObject;
 		
 		StartCoroutine(WaitAndGoto(0.5F,new ButtonEventDelegate(loadNextGame)));
@@ -187,6 +191,7 @@ public class Global : MonoBehaviour {
 	//param . mevent means the things to do after time waits
 	IEnumerator WaitAndGoto(float waitTime,ButtonEventDelegate mevent)  
 	{
+
 		yield return new WaitForSeconds(waitTime);
 		Destroy (loadScene);
 		mevent ();

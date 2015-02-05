@@ -47,6 +47,7 @@ public class JoySticsControl : MonoBehaviour {
 		
 		if (player.GetComponent<PlayerController>().playerState == 1 ) {
 			currentVelocity = new Vector3 ( runVelocity.x, player.rigidbody.velocity.y, 0);
+//			player.rigidbody.AddForce (runVelocity, ForceMode.Impulse);
 			tkanim.Play ("walkright");
 			longPress = true;
 		}
@@ -63,23 +64,10 @@ public class JoySticsControl : MonoBehaviour {
 
 
 	public void touchUp(){
-		if (player.GetComponent<PlayerController> ().playerState == 1  && Mathf.Abs( player.rigidbody.velocity.y ) <= 0.1f ) {
-			if(longPress){
-				 
-				if (player.rigidbody.velocity.x < -0.02) {
-					currentVelocity = new Vector3 (runVelocity.x, jumpVelocity.y, 0);
-				} else if (player.rigidbody.velocity.x > 0.02) {
-					currentVelocity = new Vector3 (-1 * runVelocity.x, jumpVelocity.y, 0);
-				} else {
-					currentVelocity = jumpVelocity; 
-				}
-			}else{
-				currentVelocity = jumpVelocity; 
-			} 
-			longPress = false;// make the player not controlled by update
-			tkanim.Play ("fly");
-  
-			player.rigidbody.velocity = currentVelocity;
+		if (player.GetComponent<PlayerController> ().playerState == 1 && Mathf.Abs (player.rigidbody.velocity.y) <= 0.1f) {
+				
+			player.rigidbody.AddForce (jumpVelocity, ForceMode.Impulse);
+		
 		}
 	}
 	public void touchDown(){
@@ -120,6 +108,8 @@ public class JoySticsControl : MonoBehaviour {
 			}
 		} else if (mytype == PAUSE_BOX_TYPE.PAUSE_BOX_FAILED) {
 
+
+			GameObject.FindGameObjectWithTag ("pauseTitle").GetComponent<tk2dTextMesh>().text = "失败";
 			if(GameObject.FindGameObjectWithTag ("pausecancel")){
 				GameObject.FindGameObjectWithTag ("pausecancel").SetActive(false);
 			}
@@ -129,6 +119,9 @@ public class JoySticsControl : MonoBehaviour {
 				GameObject.FindGameObjectWithTag ("pausenext").SetActive(false);
 			}
 		} else if (mytype == PAUSE_BOX_TYPE.PAUSE_BOX_LEVEL_DONE) {
+
+
+			GameObject.FindGameObjectWithTag ("pauseTitle").GetComponent<tk2dTextMesh>().text = "成功";
 
 			if(GameObject.FindGameObjectWithTag ("pausecancel")){
 				GameObject.FindGameObjectWithTag ("pausecancel").SetActive(false);
